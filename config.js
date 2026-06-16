@@ -5,7 +5,7 @@ console.log("config.js is running");
 const url = "mongodb://127.0.0.1:27017/e-comm";
 
 
-mongoose.connect(url)
+mongoose.connect(process.env.MONGO_URL)
   .then(() => {
     console.log("MongoDB connected successfully");
   })
