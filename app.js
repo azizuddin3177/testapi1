@@ -79,31 +79,42 @@ app.delete("/delete/:_id", async (req, res) => {
 });
 
 
-// app.patch("/", async (req, res) => {
-//     await products.updateOne(
-//         { name: "Iphone 12" },
-//         { $set: { price: 320, brand: "Apple" }, }
-//     )
-//     res.send('Updated')
-// })
+
 
 //for search
 
-// app.get("/search/:key", async (req,res)=>{
+app.get("/search/:key", async (req, res) => {
+    try {
+        let result = await products.find({
+            $or: [
+                { name: { $regex: req.params.key, $options: "i" } },
+                { brand: { $regex: req.params.key, $options: "i" } }
+            ]
+        });
 
-//     let result = await products.find(
-//         {
-//             $or:[
-//                 {"name":{$regex:req.params.key}},
-//                 {"brand":{$regex:req.params.key}},
-                
-//             ]
-//         }
-//     );
+        if (!result || result.length === 0) {
+            return res.status(404).send({
+                success: false,
+                message: "No Result"
+            });
+        }
 
-//     console.log(req.params.key)
-//     console.log(req.params.key)
-//     res.send(result)
-// })
+        console.log(req.params.key);
+
+        res.send({
+            success: true,
+            data: result
+        });
+
+    } catch (error) {
+        console.log(error.message);
+
+        res.status(500).send({
+            success: false,
+            message: "Search failed",
+            error: error.message
+        });
+    }
+});
 
 app.listen(PORT);
