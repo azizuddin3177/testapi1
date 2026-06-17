@@ -42,13 +42,7 @@ app.get("/list", async (req, res) => {
     }
 });
 
-// app.put("/update", async (req, res) => {
-//     let data = await products.updateOne(
-//         { name: "Galaxy" },
-//         { $set: { price: 222 } }
-//     )
-//     res.send("updated ")
-// })
+
 
 app.delete("/delete/:_id", async (req, res) => {
     
